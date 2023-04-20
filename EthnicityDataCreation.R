@@ -161,6 +161,7 @@ eth_affinity <- foreach(i = 1:nrow(eth_final),
 parallel::stopCluster(cl = my.cluster)
 
 eth_final$affinity <- eth_affinity
+
 #save(eth_final, file = "Data/eth_final2.RData")
 
 
