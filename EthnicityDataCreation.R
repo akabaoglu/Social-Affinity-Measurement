@@ -1,12 +1,6 @@
 library(tidyverse)
 library(readxl)
 library(haven)
-library(sna)
-library(intergraph)
-library(igraph)
-library(btergm)
-library(network)
-library(varhandle)
 library(janitor)
 library(foreach)
 
@@ -18,7 +12,6 @@ ethnicity <- read_csv("Data/CREG.Eth.1.2.csv")
 
 
 ### 
-
 ethnicity %>% 
   janitor::clean_names() %>% 
   mutate(estimate = if_else(is.na(group_proportion), 1, 0),
@@ -63,12 +56,6 @@ eth_new %>%
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
   labs(y = "Total Coverage")
-
-
-
-
-
-
 
 ### DO NOT RUN
 

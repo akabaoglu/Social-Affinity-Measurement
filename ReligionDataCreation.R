@@ -1,12 +1,6 @@
 library(tidyverse)
 library(readxl)
 library(haven)
-library(sna)
-library(intergraph)
-library(igraph)
-library(btergm)
-library(network)
-library(varhandle)
 library(janitor)
 library(foreach)
 
