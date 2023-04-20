@@ -268,7 +268,7 @@ rel_final %>%
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         axis.title.x = element_blank()) +
-  labs(y = "Religious Affinity with the UK")
+  labs(y = "Religious Affinity with the U.K.")
   
 TR2015_comp %>% 
   filter(affinity.x != 0) %>% 
@@ -276,9 +276,10 @@ TR2015_comp %>%
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with Turkey",
-       y = "Positive Turkish Public Opinion (%)")
+       y = "Positive Turkish Public Opinion")
 
 US_2013_comp %>% 
   filter(affinity.x != 0) %>% 
@@ -286,9 +287,10 @@ US_2013_comp %>%
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with the U.S.",
-       y = "Positive Public Opinion towards the U.S. (%)")
+       y = "Positive Public Opinion towards the U.S.")
   
 
 # Ethnic Affinity
@@ -324,7 +326,7 @@ eth_final %>%
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         axis.title.x = element_blank()) +
-  labs(y = "Ethnic Affinity with the UK")
+  labs(y = "Ethnic Affinity with the U.K.")
 
 
 TR2015_comp %>% 
@@ -333,9 +335,10 @@ TR2015_comp %>%
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with Turkey",
-       y = "Positive Turkish Public Opinion (%)")
+       y = "Positive Turkish Public Opinion")
 
 US_2013_comp %>% 
   filter(affinity.y != 0) %>% 
@@ -343,11 +346,7 @@ US_2013_comp %>%
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
+  scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with the U.S.",
-       y = "Positive Public Opinion towards the U.S. (%)")
-
-
-
-eth_final %>% filter(c1 == 640, c2 == 2)
-eth_final %>% filter(c1 == 2, c2 == 640)
+       y = "Positive Public Opinion towards the U.S.")
