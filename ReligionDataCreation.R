@@ -10,31 +10,6 @@ rm(list = ls())
 religion <- read_csv("Data/CREG.Rel.1.2.csv")
 
 ### 
-religion %>% 
-  janitor::clean_names() %>% 
-  mutate(estimate = if_else(is.na(group_proportion), 1, 0),
-         group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
-  filter(independent_country == 1, 
-         group_name %in% c("other", "nonreligious", "traditionalbelief")) %>% 
-  mutate(region = floor(cowcode/100),
-         group_name = as_factor(group_name)) %>% 
-  group_by(cowcode, group_name) %>% 
-  summarize(across(c(group_proportion, region), ~ mean(.x, na.rm = T))) %>% 
-  mutate(group_name = if_else(group_name == "other", "Other", 
-                          if_else(group_name == "nonreligious", "Non-Religious", "Traditional Belief")),
-         region = as_factor(region),
-         group_proportion = group_proportion/100) %>% 
-  ggplot(aes(x = region)) +
-  geom_boxplot(aes(y = group_proportion)) +
-  facet_wrap(~group_name) +
-  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
-                              "E.Europe", "C.Africa", "S.Africa", 
-                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = .375),
-        axis.title = element_blank())
-
 rel_new <- religion %>% 
   janitor::clean_names() %>% 
   mutate(estimate = if_else(is.na(group_proportion), 1, 0),
@@ -44,32 +19,6 @@ rel_new <- religion %>%
   group_by(cowcode, year, group_name) %>% 
   slice(1) %>% 
   ungroup()
-
-
-rel_new %>% 
-  group_by(cowcode, year) %>% 
-  summarize(total_cov = sum(group_proportion), .groups = 'drop') %>% 
-  mutate(total_cov = if_else(total_cov > 100, 100, total_cov)) %>% 
-  group_by(cowcode) %>% 
-  summarize(means = mean(total_cov)) %>% 
-  mutate(region = as_factor(floor(cowcode/100))) %>% 
-  ggplot(aes(x = region)) +
-  geom_boxplot(aes(y = means/100)) +
-  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
-                              "E.Europe", "C.Africa", "S.Africa", 
-                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = .375),
-        axis.title.x = element_blank()) +
-  labs(y = "Total Coverage")
-  
-
-
-
-
-
-
 
 ### DO NOT RUN
 

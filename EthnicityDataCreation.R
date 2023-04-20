@@ -12,50 +12,12 @@ ethnicity <- read_csv("Data/CREG.Eth.1.2.csv")
 
 
 ### 
-ethnicity %>% 
-  janitor::clean_names() %>% 
-  mutate(estimate = if_else(is.na(group_proportion), 1, 0),
-         group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
-  filter(group_name %in% c("other"),
-         independent_country == 1) %>% 
-  group_by(cowcode, group_name) %>% 
-  summarize(means = mean(group_proportion)) %>% 
-  mutate(region = floor(cowcode/100)) %>% 
-  ggplot(aes(x = as_factor(region))) +
-  geom_boxplot(aes(y = means/100)) +
-  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
-                              "E.Europe", "C.Africa", "S.Africa", 
-                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = .375),
-        axis.title.x = element_blank()) +
-  labs(y = "Other")
-
 eth_new <- ethnicity %>% 
   janitor::clean_names() %>% 
   mutate(estimate = if_else(is.na(group_proportion), 1, 0),
          group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
   filter(group_name != "other",
          independent_country == 1) 
-
-eth_new %>% 
-  group_by(cowcode, year) %>% 
-  summarize(total_cov = sum(group_proportion), .groups = 'drop') %>% 
-  mutate(total_cov = if_else(total_cov > 100, 100, total_cov)) %>% 
-  group_by(cowcode) %>% 
-  summarize(means = mean(total_cov)) %>% 
-  mutate(region = as_factor(floor(cowcode/100))) %>% 
-  ggplot(aes(x = region)) +
-  geom_boxplot(aes(y = means/100)) +
-  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
-                              "E.Europe", "C.Africa", "S.Africa", 
-                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
-  scale_y_continuous(labels = scales::percent) +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 90, vjust = .375),
-        axis.title.x = element_blank()) +
-  labs(y = "Total Coverage")
 
 ### DO NOT RUN
 
