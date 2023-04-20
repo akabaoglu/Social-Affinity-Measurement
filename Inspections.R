@@ -3,8 +3,8 @@ library(haven)
 library(ggrepel)
 library(RColorBrewer)
 
-load("Data/rel_final.RData")
-load("Data/eth_final.RData")
+load("Data/rel_final2.RData")
+load("Data/eth_final2.RData")
 load("Data/demog_final.RData")
 load("Data/AgreementScores.RData")
 dispute <- read_dta("Data/jpr-tprd-replicationdata.dta")
@@ -136,7 +136,7 @@ TR2015_comp <- dat_TR_2015 %>%
 ## Religious Affinity
 rel_final %>% 
   ggplot() +
-  geom_density(aes(x = rel_aff)) +
+  geom_density(aes(x = affinity)) +
   theme_bw() +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
@@ -144,7 +144,7 @@ rel_final %>%
   labs(x = "Religious Affinity")
 
 
-quantile(rel_final$rel_aff, seq(0, 1, .1))
+quantile(rel_final$affinity, seq(0, 1, .1))
 
 rel_final %>% 
   filter(c1 == 200, c2 %in% c(20, 70, 260, 437, 640, 666, 732, 750)) %>% 
@@ -158,7 +158,7 @@ rel_final %>%
                     732, "South Korea",
                     750, "India"), by = "c2") %>% 
   mutate(state_name = as_factor(state_name)) %>% 
-  ggplot(aes(x = year, y = rel_aff, color = state_name)) +
+  ggplot(aes(x = year, y = affinity, color = state_name)) +
   geom_point(size = .5) +
   geom_line() +
   scale_color_manual(values = RColorBrewer::brewer.pal(8, "Spectral")) +
@@ -169,8 +169,8 @@ rel_final %>%
   labs(y = "Religious Affinity with the UK")
   
 TR2015_comp %>% 
-  filter(rel_aff != 0) %>% 
-  ggplot(aes(x = rel_aff, view)) +
+  filter(affinity.x != 0) %>% 
+  ggplot(aes(x = affinity.x, view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick3') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
@@ -179,8 +179,8 @@ TR2015_comp %>%
        y = "Positive Turkish Public Opinion (%)")
 
 US_2013_comp %>% 
-  filter(rel_aff != 0) %>% 
-  ggplot(aes(x = rel_aff, y = us_view)) +
+  filter(affinity.x != 0) %>% 
+  ggplot(aes(x = affinity.x, y = us_view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick3') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
@@ -203,7 +203,7 @@ eth_final %>%
                      41, "Haiti",
                     950, "Fiji"), by = "c2") %>% 
   mutate(state_name = as_factor(state_name)) %>% 
-  ggplot(aes(x = year, y = eth_aff, color = state_name)) +
+  ggplot(aes(x = year, y = affinity, color = state_name)) +
   geom_point(size = .5) +
   geom_line() +
   scale_color_manual(values = RColorBrewer::brewer.pal(8, "Spectral")) +
@@ -216,19 +216,19 @@ eth_final %>%
 
 eth_final %>% 
   ggplot() +
-  geom_density(aes(x = eth_aff)) +
+  geom_density(aes(x = affinity)) +
   theme_bw() +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
   labs(x = "Ethnic Affinity")
 
-quantile(eth_final$eth_aff, seq(.8, 1, .025))
+quantile(eth_final$affinity, seq(.8, 1, .025))
 
 
 TR2015_comp %>% 
-  filter(eth_aff != 0) %>% 
-  ggplot(aes(x = eth_aff, view)) +
+  filter(affinity.y != 0) %>% 
+  ggplot(aes(x = affinity.y, view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick3') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
@@ -237,8 +237,8 @@ TR2015_comp %>%
        y = "Positive Turkish Public Opinion (%)")
 
 US_2013_comp %>% 
-  filter(eth_aff != 0) %>% 
-  ggplot(aes(x = eth_aff, y = us_view)) +
+  filter(affinity.y != 0) %>% 
+  ggplot(aes(x = affinity.y, y = us_view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick3') +
   geom_label_repel(aes(label = state_name), alpha = .8) +

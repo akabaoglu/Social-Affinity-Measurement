@@ -13,32 +13,87 @@ library(foreach)
 rm(list = ls())
 
 ### DATA LOADING
-polity_v <- read_xls("Data/p5v2018.xls")
-religion <- read_csv("Data/CREG.Rel.1.2.csv")
+
 ethnicity <- read_csv("Data/CREG.Eth.1.2.csv")
-mid_targets <- read.csv("Data/dyadic_mid_4.02.csv")
-cow_trade.dt <- read_csv("Data/cow_trade_dyad.csv") %>% 
-  select(1:7) %>%
-  filter(year >= 1945 & year <= 2012)
-mid_targets <- mid_targets %>% 
-  select(statea, namea, stateb, nameb, strtyr, orignatb, hihostb) %>% 
-  filter(orignatb == 1 & hihostb > 3 ) %>% # statea: target , stateb: initiator; highest level of hostility should at least be the use of force(>=4)
-  select(c(1,2,3,4,5,6)) %>% 
-  unique() %>% 
-  mutate(mid_target = 1)
 
-alliance.dt <- read_csv("Data/alliance_v4.1_by_directed_yearly.csv")
-
-cap_dist.dt <- read.csv("Data/capdist.csv")
-
-nmc <- read_csv("Data/NMC-60-abridged.csv") %>% select(c(2,3,10))
 
 ### 
+
+ethnicity %>% 
+  janitor::clean_names() %>% 
+  mutate(estimate = if_else(is.na(group_proportion), 1, 0),
+         group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
+  filter(group_name %in% c("other"),
+         independent_country == 1) %>% 
+  group_by(cowcode, group_name) %>% 
+  summarize(means = mean(group_proportion)) %>% 
+  mutate(region = floor(cowcode/100)) %>% 
+  ggplot(aes(x = as_factor(region))) +
+  geom_boxplot(aes(y = means/100)) +
+  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
+                              "E.Europe", "C.Africa", "S.Africa", 
+                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .375),
+        axis.title.x = element_blank()) +
+  labs(y = "Other")
+
 eth_new <- ethnicity %>% 
   janitor::clean_names() %>% 
-  filter(!(group_name %in% c("other", "mixed"))) %>% 
-  mutate(group_proportion = if_else(is.na(group_proportion), group_estimate, group_proportion)) %>% 
-  drop_na()
+  mutate(estimate = if_else(is.na(group_proportion), 1, 0),
+         group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
+  filter(group_name != "other",
+         independent_country == 1) 
+
+eth_new %>% 
+  group_by(cowcode, year) %>% 
+  summarize(total_cov = sum(group_proportion), .groups = 'drop') %>% 
+  mutate(total_cov = if_else(total_cov > 100, 100, total_cov)) %>% 
+  group_by(cowcode) %>% 
+  summarize(means = mean(total_cov)) %>% 
+  mutate(region = as_factor(floor(cowcode/100))) %>% 
+  ggplot(aes(x = region)) +
+  geom_boxplot(aes(y = means/100)) +
+  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
+                              "E.Europe", "C.Africa", "S.Africa", 
+                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .375),
+        axis.title.x = element_blank()) +
+  labs(y = "Total Coverage")
+
+
+
+
+
+
+
+### DO NOT RUN
+
+eth_aff <- c()
+
+for (i in min(eth_new$year):max(eth_new$year)){
+  countries <- eth_new %>% 
+    filter(year == i) %>% 
+    select(cowcode) %>% 
+    pull() %>% 
+    unique()
+  
+  eth_aff <- rbind(eth_aff, expand_grid(c1 = countries, c2 = countries, year = i))
+}
+
+
+eth_final <- eth_aff %>% 
+  filter(c1 != c2)
+
+
+
+
+
+
+
 
 fx <- function(x1, x2, y){
   
@@ -87,55 +142,8 @@ fx <- function(x1, x2, y){
   else return(NA)
 }
 
-eth_trial <- expand_grid(c1 = unique(eth_new$cowcode), c2 = unique(eth_new$cowcode), year = 1945:2013) %>% 
-  filter(c1 != c2) %>% 
-  sample_n(1, replace = F) %>% 
-  mutate(eth_aff = pmap_dbl(list(c1, c2, year), fx))
-
-eth_trial
-
-eth_new %>% 
-  filter(cowcode == eth_trial$c1 & year == eth_trial$year)
-
-eth_new %>% 
-  filter(cowcode == eth_trial$c2 & year == eth_trial$year)
-
-eth_available <- eth_new %>% 
-  select(cowcode, year) %>% 
-  group_by(cowcode) %>% 
-  summarize(min = min(year), max = max(year))
 
 
-eth_final <- expand_grid(c1 = unique(eth_new$cowcode), c2 = unique(eth_new$cowcode), year = 1945:2013) %>% 
-  filter(c1 != c2) %>% 
-  mutate(eth_aff = 0,
-         avail = 0)
-
-n.cores <- parallel::detectCores() - 1
-my.cluster <- parallel::makeCluster(
-  n.cores, 
-  type = "PSOCK"
-)
-doParallel::registerDoParallel(cl = my.cluster)
-foreach::getDoParRegistered()
-
-t1 <- Sys.time()
-availability <- foreach(i = 1:nrow(eth_final),
-                        .combine = "c",
-                        .packages = c("tidyverse")) %dopar%{
-                          if (eth_final$year[i] %in% c(eth_available$min[eth_available$cowcode == eth_final$c1[i]]:eth_available$max[eth_available$cowcode == eth_final$c1[i]]) & 
-                              eth_final$year[i] %in% c(eth_available$min[eth_available$cowcode == eth_final$c2[i]]:eth_available$max[eth_available$cowcode == eth_final$c2[i]])) {
-                            return(1)
-                          } else return(0)}
-t2 <- Sys.time()
-
-parallel::stopCluster(cl = my.cluster)
-
-eth_final$avail <- availability
-
-eth_final <- eth_final %>% filter(avail == 1)
-
-mean(availability)
 
 n.cores <- parallel::detectCores() - 1
 my.cluster <- parallel::makeCluster(
@@ -152,8 +160,8 @@ eth_affinity <- foreach(i = 1:nrow(eth_final),
 
 parallel::stopCluster(cl = my.cluster)
 
-eth_final$eth_aff <- eth_affinity
+eth_final$affinity <- eth_affinity
+#save(eth_final, file = "Data/eth_final2.RData")
 
-save(eth_final, file = "eth_final.RData")
 
 

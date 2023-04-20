@@ -13,35 +13,90 @@ library(foreach)
 rm(list = ls())
 
 ### DATA LOADING
-polity_v <- read_xls("Data/p5v2018.xls")
 religion <- read_csv("Data/CREG.Rel.1.2.csv")
-ethnicity <- read_csv("Data/CREG.Eth.1.2.csv")
-mid_targets <- read.csv("Data/dyadic_mid_4.02.csv")
-cow_trade.dt <- read_csv("Data/cow_trade_dyad.csv") %>% 
-  select(1:7) %>%
-  filter(year >= 1945 & year <= 2012)
-mid_targets <- mid_targets %>% 
-  select(statea, namea, stateb, nameb, strtyr, orignatb, hihostb) %>% 
-  filter(orignatb == 1 & hihostb > 3 ) %>% # statea: target , stateb: initiator; highest level of hostility should at least be the use of force(>=4)
-  select(c(1,2,3,4,5,6)) %>% 
-  unique() %>% 
-  mutate(mid_target = 1)
-
-alliance.dt <- read_csv("Data/alliance_v4.1_by_directed_yearly.csv")
-
-cap_dist.dt <- read.csv("Data/capdist.csv")
-
-nmc <- read_csv("Data/NMC-60-abridged.csv") %>% select(c(2,3,10))
 
 ### 
+religion %>% 
+  janitor::clean_names() %>% 
+  mutate(estimate = if_else(is.na(group_proportion), 1, 0),
+         group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
+  filter(independent_country == 1, 
+         group_name %in% c("other", "nonreligious", "traditionalbelief")) %>% 
+  mutate(region = floor(cowcode/100),
+         group_name = as_factor(group_name)) %>% 
+  group_by(cowcode, group_name) %>% 
+  summarize(across(c(group_proportion, region), ~ mean(.x, na.rm = T))) %>% 
+  mutate(group_name = if_else(group_name == "other", "Other", 
+                          if_else(group_name == "nonreligious", "Non-Religious", "Traditional Belief")),
+         region = as_factor(region),
+         group_proportion = group_proportion/100) %>% 
+  ggplot(aes(x = region)) +
+  geom_boxplot(aes(y = group_proportion)) +
+  facet_wrap(~group_name) +
+  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
+                              "E.Europe", "C.Africa", "S.Africa", 
+                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .375),
+        axis.title = element_blank())
+
 rel_new <- religion %>% 
   janitor::clean_names() %>% 
-  mutate(group_proportion = if_else(is.na(group_proportion), group_estimate, group_proportion)) %>% 
-  filter(!(group_name %in% c("nonreligious", "other", "traditionalbelief"))) %>% 
-  drop_na() %>% 
+  mutate(estimate = if_else(is.na(group_proportion), 1, 0),
+         group_proportion = if_else(estimate == 1, group_estimate, group_proportion)) %>% 
+  filter(independent_country == 1, 
+         !(group_name %in% c("other", "nonreligious", "traditionalbelief"))) %>% 
   group_by(cowcode, year, group_name) %>% 
   slice(1) %>% 
   ungroup()
+
+
+rel_new %>% 
+  group_by(cowcode, year) %>% 
+  summarize(total_cov = sum(group_proportion), .groups = 'drop') %>% 
+  mutate(total_cov = if_else(total_cov > 100, 100, total_cov)) %>% 
+  group_by(cowcode) %>% 
+  summarize(means = mean(total_cov)) %>% 
+  mutate(region = as_factor(floor(cowcode/100))) %>% 
+  ggplot(aes(x = region)) +
+  geom_boxplot(aes(y = means/100)) +
+  scale_x_discrete(labels = c("N.America", "S.America", "W.Europe", 
+                              "E.Europe", "C.Africa", "S.Africa", 
+                              "MENA", "C.Asia", "SE.Asia", "Oceanica")) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, vjust = .375),
+        axis.title.x = element_blank()) +
+  labs(y = "Total Coverage")
+  
+
+
+
+
+
+
+
+### DO NOT RUN
+
+rel_aff <- c()
+
+for (i in min(rel_new$year):max(rel_new$year)){
+  countries <- rel_new %>% 
+    filter(year == i) %>% 
+    select(cowcode) %>% 
+    pull() %>% 
+    unique()
+  
+  rel_aff <- rbind(rel_aff, expand_grid(c1 = countries, c2 = countries, year = i))
+}
+
+rel_final <- rel_aff %>% 
+  filter(c1 != c2)
+
+
+
+
 
 
 fx <- function(x1, x2, y){
@@ -91,20 +146,20 @@ fx <- function(x1, x2, y){
   else return(NA)
 }
 
-rel_trial <- expand_grid(c1 = unique(rel_new$cowcode), c2 = unique(rel_new$cowcode), year = 1945:2000) %>% 
-  filter(c1 != c2) %>% 
-  sample_n(1, replace = F) %>% 
-  mutate(rel_aff = pmap_dbl(list(c1, c2, year), fx))
-
-rel_trial
-
-  
-
-rel_new %>% 
-  filter(cowcode == 2 & year == 1945)
-
-rel_new %>% 
-  filter(cowcode == 20 & year == 1945)
+# rel_trial <- expand_grid(c1 = unique(rel_new$cowcode), c2 = unique(rel_new$cowcode), year = 1945:2000) %>% 
+#   filter(c1 != c2) %>% 
+#   sample_n(1, replace = F) %>% 
+#   mutate(rel_aff = pmap_dbl(list(c1, c2, year), fx))
+# 
+# rel_trial
+# 
+#   
+# 
+# rel_new %>% 
+#   filter(cowcode == 2 & year == 1945)
+# 
+# rel_new %>% 
+#   filter(cowcode == 20 & year == 1945)
 
 
 ### Anomalies:
@@ -115,41 +170,6 @@ rel_new %>%
 # 696, 484, 1991: muslim and shia/sunni were coded as different categories
 
 ###
-
-rel_available <- rel_new %>% 
-  select(cowcode, year) %>% 
-  group_by(cowcode) %>% 
-  summarize(min = min(year), max = max(year))
-
-
-rel_final <- expand_grid(c1 = unique(rel_new$cowcode), c2 = unique(rel_new$cowcode), year = 1945:2013) %>% 
-  filter(c1 != c2) %>% 
-  mutate(rel_aff = 0,
-         avail = 0)
-
-n.cores <- parallel::detectCores() - 1
-my.cluster <- parallel::makeCluster(
-  n.cores, 
-  type = "PSOCK"
-)
-doParallel::registerDoParallel(cl = my.cluster)
-foreach::getDoParRegistered()
-
-t1 <- Sys.time()
-availability <- foreach(i = 1:nrow(rel_final),
-                  .combine = "c",
-                  .packages = c("tidyverse")) %dopar%{
-  if (rel_final$year[i] %in% c(rel_available$min[rel_available$cowcode == rel_final$c1[i]]:rel_available$max[rel_available$cowcode == rel_final$c1[i]]) & 
-      rel_final$year[i] %in% c(rel_available$min[rel_available$cowcode == rel_final$c2[i]]:rel_available$max[rel_available$cowcode == rel_final$c2[i]])) {
-    return(1)
-  } else return(0)}
-t2 <- Sys.time()
-
-parallel::stopCluster(cl = my.cluster)
-
-rel_final$avail <- availability
-
-rel_final <- rel_final %>% filter(avail == 1)
 
 
 
@@ -164,12 +184,16 @@ foreach::getDoParRegistered()
 rel_affinity <- foreach(i = 1:nrow(rel_final),
                              .combine = "c",
                              .packages = c("tidyverse")) %dopar% 
-  {rel_final$rel_aff[i] <- fx(x1 = rel_final$c1[i], x2 = rel_final$c2[i], y = rel_final$year[i])}
+  {fx(x1 = rel_final$c1[i], x2 = rel_final$c2[i], y = rel_final$year[i])}
+
 
 parallel::stopCluster(cl = my.cluster)
 
-rel_final$rel_aff <- rel_affinity
+rel_final$affinity <- rel_affinity
 
-save(rel_final, file = "rel_final.RData")
+#save(rel_final, file = "Data/rel_final2.RData")
+
+
+
 
 
