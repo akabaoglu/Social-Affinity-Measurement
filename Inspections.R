@@ -274,7 +274,7 @@ TR2015_comp %>%
   filter(affinity.x != 0) %>% 
   ggplot(aes(x = affinity.x, view)) +
   geom_point() +
-  geom_smooth(method = 'lm', color = 'firebrick3') +
+  geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
   theme_bw() +
   labs(x = "Religious Affinity with Turkey",
@@ -284,7 +284,7 @@ US_2013_comp %>%
   filter(affinity.x != 0) %>% 
   ggplot(aes(x = affinity.x, y = us_view)) +
   geom_point() +
-  geom_smooth(method = 'lm', color = 'firebrick3') +
+  geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
   theme_bw() +
   labs(x = "Religious Affinity with the U.S.",
@@ -331,7 +331,7 @@ TR2015_comp %>%
   filter(affinity.y != 0) %>% 
   ggplot(aes(x = affinity.y, view)) +
   geom_point() +
-  geom_smooth(method = 'lm', color = 'firebrick3') +
+  geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
   theme_bw() +
   labs(x = "Ethnic Affinity with Turkey",
@@ -341,8 +341,13 @@ US_2013_comp %>%
   filter(affinity.y != 0) %>% 
   ggplot(aes(x = affinity.y, y = us_view)) +
   geom_point() +
-  geom_smooth(method = 'lm', color = 'firebrick3') +
+  geom_smooth(method = 'lm', color = 'firebrick2') +
   geom_label_repel(aes(label = state_name), alpha = .8) +
   theme_bw() +
   labs(x = "Ethnic Affinity with the U.S.",
        y = "Positive Public Opinion towards the U.S. (%)")
+
+
+
+eth_final %>% filter(c1 == 640, c2 == 2)
+eth_final %>% filter(c1 == 2, c2 == 640)
