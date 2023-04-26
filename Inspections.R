@@ -268,7 +268,7 @@ rel_final %>%
   ggplot(aes(x = year, y = affinity, color = state_name)) +
   geom_point(size = .5) +
   geom_line() +
-  scale_color_manual(values = RColorBrewer::brewer.pal(8, "Spectral")) +
+  scale_color_manual(values = rev(RColorBrewer::brewer.pal(9, "Set1")[-6])) +
   theme_bw() +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
@@ -331,7 +331,7 @@ eth_final %>%
   ggplot(aes(x = year, y = affinity, color = state_name)) +
   geom_point(size = .5) +
   geom_line() +
-  scale_color_manual(values = RColorBrewer::brewer.pal(8, "Spectral")) +
+  scale_color_manual(values = rev(RColorBrewer::brewer.pal(9, "Set1")[-6])) +
   theme_bw() +
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
