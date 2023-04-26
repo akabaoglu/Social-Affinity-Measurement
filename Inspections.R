@@ -250,7 +250,6 @@ rel_final %>%
   labs(x = "Religious Affinity") +
   theme(text = element_text(family = "Times New Roman"))
 
-
 quantile(rel_final$affinity, seq(0, 1, .1))
 
 rel_final %>% 
@@ -312,9 +311,7 @@ eth_final %>%
   labs(x = "Ethnic Affinity") +
   theme(text = element_text(family = "Times New Roman"))
   
-
 quantile(eth_final$affinity, seq(.8, 1, .025))
-
 
 eth_final %>% 
   filter(c1 == 200, c2 %in% c(205, 660, 101, 95, 590, 694, 41, 950)) %>% 
@@ -338,7 +335,6 @@ eth_final %>%
         axis.title.x = element_blank()) +
   labs(y = "Ethnic Affinity with the U.K.") +
   theme(text = element_text(family = "Times New Roman"))
-
 
 TR2015_comp %>% 
   filter(affinity.y != 0) %>% 
