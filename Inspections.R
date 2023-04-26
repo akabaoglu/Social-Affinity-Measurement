@@ -171,7 +171,8 @@ religion %>%
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
-        axis.title = element_blank())
+        axis.title = element_blank()) +
+  theme(text = element_text(family = "Times New Roman"))
 
 
 rel_new %>% 
@@ -190,7 +191,8 @@ rel_new %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
-  labs(y = "Total Coverage")
+  labs(y = "Total Coverage") +
+  theme(text = element_text(family = "Times New Roman"))
 
 ## Ethnicity
 
@@ -212,7 +214,8 @@ ethnicity %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
-  labs(y = "Other")
+  labs(y = "Other") +
+  theme(text = element_text(family = "Times New Roman"))
 
 eth_new %>% 
   group_by(cowcode, year) %>% 
@@ -230,7 +233,8 @@ eth_new %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
-  labs(y = "Total Coverage")
+  labs(y = "Total Coverage") +
+  theme(text = element_text(family = "Times New Roman"))
 
 
 ### Measurement Diagnostics
@@ -243,7 +247,8 @@ rel_final %>%
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
-  labs(x = "Religious Affinity")
+  labs(x = "Religious Affinity") +
+  theme(text = element_text(family = "Times New Roman"))
 
 
 quantile(rel_final$affinity, seq(0, 1, .1))
@@ -268,29 +273,32 @@ rel_final %>%
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         axis.title.x = element_blank()) +
-  labs(y = "Religious Affinity with the U.K.")
+  labs(y = "Religious Affinity with the U.K.") +
+  theme(text = element_text(family = "Times New Roman"))
   
 TR2015_comp %>% 
   filter(affinity.x != 0) %>% 
   ggplot(aes(x = affinity.x, view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8) +
+  geom_label_repel(aes(label = state_name), alpha = .8, family = "Times New Roman") +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with Turkey",
-       y = "Positive Turkish Public Opinion")
+       y = "Positive Turkish Public Opinion") +
+  theme(text = element_text(family = "Times New Roman"))
 
 US_2013_comp %>% 
   filter(affinity.x != 0) %>% 
   ggplot(aes(x = affinity.x, y = us_view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8) +
+  geom_label_repel(aes(label = state_name), alpha = .8, family = "Times New Roman") +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with the U.S.",
-       y = "Positive Public Opinion towards the U.S.")
+       y = "Positive Public Opinion towards the U.S.") +
+  theme(text = element_text(family = "Times New Roman"))
   
 
 # Ethnic Affinity
@@ -301,7 +309,9 @@ eth_final %>%
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
-  labs(x = "Ethnic Affinity")
+  labs(x = "Ethnic Affinity") +
+  theme(text = element_text(family = "Times New Roman"))
+  
 
 quantile(eth_final$affinity, seq(.8, 1, .025))
 
@@ -326,7 +336,8 @@ eth_final %>%
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         axis.title.x = element_blank()) +
-  labs(y = "Ethnic Affinity with the U.K.")
+  labs(y = "Ethnic Affinity with the U.K.") +
+  theme(text = element_text(family = "Times New Roman"))
 
 
 TR2015_comp %>% 
@@ -334,19 +345,21 @@ TR2015_comp %>%
   ggplot(aes(x = affinity.y, view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8) +
+  geom_label_repel(aes(label = state_name), alpha = .8, family = "Times New Roman") +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with Turkey",
-       y = "Positive Turkish Public Opinion")
+       y = "Positive Turkish Public Opinion") +
+  theme(text = element_text(family = "Times New Roman"))
 
 US_2013_comp %>% 
   filter(affinity.y != 0) %>% 
   ggplot(aes(x = affinity.y, y = us_view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8) +
+  geom_label_repel(aes(label = state_name), alpha = .8, family ="Times New Roman")  +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with the U.S.",
-       y = "Positive Public Opinion towards the U.S.")
+       y = "Positive Public Opinion towards the U.S.") +
+  theme(text = element_text(family = "Times New Roman"))
