@@ -171,8 +171,7 @@ religion %>%
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
-        axis.title = element_blank()) +
-  theme(text = element_text(family = "Times New Roman"))
+        axis.title = element_blank())
 
 
 rel_new %>% 
@@ -191,8 +190,7 @@ rel_new %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
-  labs(y = "Total Coverage") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(y = "Total Coverage")
 
 ## Ethnicity
 
@@ -214,8 +212,7 @@ ethnicity %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
-  labs(y = "Other") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(y = "Other")
 
 eth_new %>% 
   group_by(cowcode, year) %>% 
@@ -233,8 +230,7 @@ eth_new %>%
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, vjust = .375),
         axis.title.x = element_blank()) +
-  labs(y = "Total Coverage") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(y = "Total Coverage")
 
 
 ### Measurement Diagnostics
@@ -242,13 +238,12 @@ eth_new %>%
 ## Religious Affinity
 rel_final %>% 
   ggplot() +
-  geom_density(aes(x = affinity)) +
+  geom_density(aes(x = affinity), fill = 'salmon', alpha = .85) +
   theme_bw() +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
-  labs(x = "Religious Affinity") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(x = "Religious Affinity")
 
 quantile(rel_final$affinity, seq(0, 1, .1))
 
@@ -272,8 +267,7 @@ rel_final %>%
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         axis.title.x = element_blank()) +
-  labs(y = "Religious Affinity with the U.K.") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(y = "Religious Affinity with the U.K.")
   
 TR2015_comp %>% 
   filter(affinity.x != 0) %>% 
@@ -284,8 +278,7 @@ TR2015_comp %>%
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with Turkey",
-       y = "Positive Turkish Public Opinion") +
-  theme(text = element_text(family = "Times New Roman"))
+       y = "Positive Turkish Public Opinion")
 
 US_2013_comp %>% 
   filter(affinity.x != 0) %>% 
@@ -296,20 +289,18 @@ US_2013_comp %>%
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with the U.S.",
-       y = "Positive Public Opinion towards the U.S.") +
-  theme(text = element_text(family = "Times New Roman"))
+       y = "Positive Public Opinion towards the U.S.") 
   
 
 # Ethnic Affinity
 eth_final %>% 
   ggplot() +
-  geom_density(aes(x = affinity)) +
+  geom_density(aes(x = affinity), fill = 'salmon', alpha = .85) +
   theme_bw() +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank()) +
-  labs(x = "Ethnic Affinity") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(x = "Ethnic Affinity")
   
 quantile(eth_final$affinity, seq(.8, 1, .025))
 
@@ -333,8 +324,7 @@ eth_final %>%
   theme(legend.position = 'bottom',
         legend.title = element_blank(),
         axis.title.x = element_blank()) +
-  labs(y = "Ethnic Affinity with the U.K.") +
-  theme(text = element_text(family = "Times New Roman"))
+  labs(y = "Ethnic Affinity with the U.K.")
 
 TR2015_comp %>% 
   filter(affinity.y != 0) %>% 
@@ -345,8 +335,7 @@ TR2015_comp %>%
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with Turkey",
-       y = "Positive Turkish Public Opinion") +
-  theme(text = element_text(family = "Times New Roman"))
+       y = "Positive Turkish Public Opinion")
 
 US_2013_comp %>% 
   filter(affinity.y != 0) %>% 
@@ -357,5 +346,4 @@ US_2013_comp %>%
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with the U.S.",
-       y = "Positive Public Opinion towards the U.S.") +
-  theme(text = element_text(family = "Times New Roman"))
+       y = "Positive Public Opinion towards the U.S.")
