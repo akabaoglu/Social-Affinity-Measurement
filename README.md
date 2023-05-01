@@ -15,7 +15,7 @@ This dataset aims to provide a measure of the connection between countries based
 > \varGamma_{x,y} = \sum\limits_{i = 1}^{n} \sqrt{\gamma^{x}_{\theta_{i}}\times\gamma^{y}_{\theta_{i}}}
 >```
 
-[The Cline Center's Composition of Religious and Ethnic Groups Project](https://clinecenter.illinois.edu/project/Religious-Ethnic-Identity/composition-religious-and-ethnic-groups-creg-project) was utilized for obtaining country-level religious and ethnic group data. The dataset is formatted in country-dyad-year, covering the period from 1945 to 2013. Religious affinity data is available for all countries during this timeframe. For ethnic affinity, no data is available for France, Cameroon, Zambia, India, and Papua New Guinea. Dyads involving any of these countries have been removed.
+[The Cline Center's Composition of Religious and Ethnic Groups Project (CREG)](https://clinecenter.illinois.edu/project/Religious-Ethnic-Identity/composition-religious-and-ethnic-groups-creg-project) was utilized for obtaining country-level religious and ethnic group data. The dataset is formatted in country-dyad-year, covering the period from 1945 to 2013. Religious affinity data is available for all countries during this timeframe. For ethnic affinity, no data is available for France, Cameroon, Zambia, India, and Papua New Guinea. Dyad-years involving any of these countries have been removed.
 
 Both datasets, named `rel_final` and `eth_final`, can be found within the `Prod` folder in this repository.
 
@@ -27,6 +27,6 @@ Both datasets, named `rel_final` and `eth_final`, can be found within the `Prod`
 * **affinity**: Affinity Score (religious affinity in `rel_final.RData`, ethnic affinity in `eth_final.RData`)
 
 ***
-This project was initiated as part of the **PS549: Conceptualization and Measurement** course, taught by Prof. Livny at University of Illinois Urbana-Champaign Political Science Department in Spring 2023.
+This project was initiated as part of the *PS549: Conceptualization and Measurement* course, taught by Prof. Livny at University of Illinois Urbana-Champaign Political Science Department in Spring 2023.
 
 [^1]: For detailed information, see the Correlates of War Project's COW Country Code [webpage](https://correlatesofwar.org/cow-country-codes/)
