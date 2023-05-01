@@ -27,6 +27,6 @@ Both datasets, named `rel_final` and `eth_final`, can be found within the `Prod`
 * **affinity**: Affinity Score (religious affinity in `rel_final.RData`, ethnic affinity in `eth_final.RData`)
 
 ***
-This project was initiated as part of the **PS549: Conceptualization and Measurement** course, taught by Prof. Livny at University of Illinois Urbana-Champaign Political Science Department during the Spring 2023 semester.
+This project was initiated as part of the **PS549: Conceptualization and Measurement** course, taught by Prof. Livny at University of Illinois Urbana-Champaign Political Science Department in Spring 2023.
 
 [^1]: For detailed information, see the Correlates of War Project's COW Country Code [webpage](https://correlatesofwar.org/cow-country-codes/)
