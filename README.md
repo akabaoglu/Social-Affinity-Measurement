@@ -1,6 +1,8 @@
 # Religious and Ethnic Affinity Dataset v. 0.1
 
-Welcome to the Religious and Ethnic Affinity Dataset! This dataset aims to provide a measure of the connection between countries based on the presence of common religious and ethnic groups. Both religious and ethnic affinity scores have been calculated using the following formula:
+Welcome to the Religious and Ethnic Affinity Dataset! 
+
+This dataset aims to provide a measure of the connection between countries based on the presence of common religious and ethnic groups. Both religious and ethnic affinity scores have been calculated using the following formula:
 
 >$\varTheta_{x, y}$ is set of social identity groups present in any two countries $x$ and $y$, both; $\theta_{i}$ is a particular identity group:
 >```math
