@@ -22,7 +22,7 @@ Both datasets, named `rel_final` and `eth_final`, can be found within the `Prod`
 * **c1**: Country 1's COW Country Code[^1]
 * **c2**: Country 2's COW Country Code
 * **year**: Year
-* **affinity**: Affinity Score (religious affinity in `rel_final`, ethnic affinity in `eth_final` 
+* **affinity**: Affinity Score (religious affinity in `rel_final.RData`, ethnic affinity in `eth_final.RData`)
 
 ***
 This project was initiated as part of the **PS549: Conceptualization and Measurement** course, taught by Prof. Livny at University of Illinois Urbana-Champaign Political Science Department during the Spring 2023 semester.
