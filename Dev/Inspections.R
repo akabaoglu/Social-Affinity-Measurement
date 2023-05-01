@@ -5,7 +5,7 @@ library(RColorBrewer)
 
 load("Prod/rel_final.RData")
 load("Prod/eth_final.RData")
-load("Data/demog_final.RData")
+load("Dev/demog_final.RData")
 load("Data/AgreementScores.RData")
 dispute <- read_dta("Data/jpr-tprd-replicationdata.dta")
 religion <- read_csv("Data/CREG.Rel.1.2.csv")

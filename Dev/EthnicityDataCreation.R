@@ -111,7 +111,7 @@ parallel::stopCluster(cl = my.cluster)
 
 eth_final$affinity <- eth_affinity
 
-#save(eth_final, file = "Data/eth_final2.RData")
+#save(eth_final, file = "Prod/eth_final.RData")
 
 
 
