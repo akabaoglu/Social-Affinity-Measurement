@@ -274,7 +274,7 @@ TR2015_comp %>%
   ggplot(aes(x = affinity.x, view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8, family = "Times New Roman") +
+  geom_label_repel(aes(label = state_name), alpha = .8) +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with Turkey",
@@ -285,7 +285,7 @@ US_2013_comp %>%
   ggplot(aes(x = affinity.x, y = us_view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8, family = "Times New Roman") +
+  geom_label_repel(aes(label = state_name), alpha = .8) +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Religious Affinity with the U.S.",
@@ -331,7 +331,7 @@ TR2015_comp %>%
   ggplot(aes(x = affinity.y, view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8, family = "Times New Roman") +
+  geom_label_repel(aes(label = state_name), alpha = .8) +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with Turkey",
@@ -342,7 +342,7 @@ US_2013_comp %>%
   ggplot(aes(x = affinity.y, y = us_view)) +
   geom_point() +
   geom_smooth(method = 'lm', color = 'firebrick2') +
-  geom_label_repel(aes(label = state_name), alpha = .8, family ="Times New Roman")  +
+  geom_label_repel(aes(label = state_name), alpha = .8)  +
   scale_y_continuous(labels = scales::percent) +
   theme_bw() +
   labs(x = "Ethnic Affinity with the U.S.",
