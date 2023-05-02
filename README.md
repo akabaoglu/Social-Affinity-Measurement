@@ -15,7 +15,7 @@ This dataset aims to provide a measure of the connection between countries based
 > \varGamma_{x,y} = \sum\limits_{i = 1}^{n} \sqrt{\gamma^{x}_{\theta_{i}}\times\gamma^{y}_{\theta_{i}}}
 >```
 
-[The Cline Center's Composition of Religious and Ethnic Groups Project (CREG)](https://clinecenter.illinois.edu/project/Religious-Ethnic-Identity/composition-religious-and-ethnic-groups-creg-project) was utilized for obtaining country-level religious and ethnic group data. The dataset is formatted in country-dyad-year, covering the period from 1945 to 2013. Religious affinity data is available for all countries during this timeframe. For ethnic affinity, no data is available for France, Cameroon, Zambia, India, and Papua New Guinea. Dyad-years involving any of these countries have been removed.
+The Cline Center's Composition of Religious and Ethnic Groups Project [(CREG)](https://clinecenter.illinois.edu/project/Religious-Ethnic-Identity/composition-religious-and-ethnic-groups-creg-project) was utilized for obtaining country-level religious and ethnic group data. The dataset is formatted in country-dyad-year, covering the period from 1945 to 2013. Religious affinity data is available for all countries during this timeframe. For ethnic affinity, no data is available for France, Cameroon, Zambia, India, and Papua New Guinea. Dyad-years involving any of these countries have been removed.
 
 Both datasets, named `rel_final` and `eth_final`, can be found within the `Prod` folder in this repository.
 
