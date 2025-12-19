@@ -1,4 +1,4 @@
-# Religious and Ethnic Affinity Dataset v. 0.1
+# Religious and Ethnic Affinity Dataset
 
 Welcome to the Religious and Ethnic Affinity Dataset! 
 
